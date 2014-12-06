@@ -8,4 +8,8 @@ package com.supermario.game.model;
 public class Map {
 
     public Player player; //ссылка на персонажа
+
+    public Map(){
+        player = new Player(this, 0, 0);
+    }
 }

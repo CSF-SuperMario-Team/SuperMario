@@ -5,5 +5,6 @@ package com.supermario.game.screens;
  */
 
 //закончились жизни или уровни пройдены
-public class EndGameScreen {
+public class EndGameScreen extends SuperMarioScreen {
+
 }
