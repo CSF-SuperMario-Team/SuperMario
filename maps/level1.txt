@@ -1,8 +1,8 @@
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B                                 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB           BBBBBBBBBBBBBBBBBBBBBBBBB           B
-B                                                                             BBBBBBBBBBB                       BBBBBBBBBBBBBBBBB                                       BBBBBBBBBBBBBB                 B
-B                                                                                              P                                                                                                       B
-B                                                                                        P P       P  P                                                                                                B
+B   BBBBB                         BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB           BBBBBBBBBBBBBBBBBBBBBBBBB           B
+B    BBB                                                                      BBBBBBBBBBB                       BBBBBBBBBBBBBBBBB                                       BBBBBBBBBBBBBB                 B
+B    BBB                                                                                       P                                                                                                       B
+B    BBB                                                                                 P P       P  P                                                                                                B
 B                                                                             D                                   D                                                                                    B
 B                                                                                       BBBBBB    BBBBBB                                                                                               B
 B                                                                           P    D                             D    P                                                                                  B
@@ -12,7 +12,7 @@ B                                                               P        D      
 B                                                              BBBBBBBB                                                                                                                                B
 B                               P                                           P                                       P    P                                            P P                              B
 B                                                                                          P                       P      P                      D                         D                           B
-B                                                 P  P  P  P                                                                                                                           D               B
-B                                               BBBBBBBBBBBBBB            P  P                   P               P         P                                        BBBBBBBBB                          B
-B           P         B  P   B  P    P   VBBBBBBBBBBBBBBBBBBBBBBBBBB   BBBBBBBBBB    B                      VBB                B      P      B          P          VB       B        B        B        B
+B    BBBB                                         P  P  P  P                                                                                                                           D               B
+B    B  B                                       BBBBBBBBBBBBBB            P  P                   P               P         P                                        BBBBBBBBB                          B
+B    B  B   P         B  P   B  P    P   VBBBBBBBBBBBBBBBBBBBBBBBBBB   BBBBBBBBBB    B                      VBB                B      P      B          P          VB       B        B        B        B
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
