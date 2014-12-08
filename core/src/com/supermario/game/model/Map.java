@@ -3,6 +3,7 @@ package com.supermario.game.model;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,37 +17,52 @@ import java.util.Scanner;
 //загрузка карты уровня из файла, движение карты, музыка
 public class Map {
 
-    List<String> lines = new ArrayList<String>();
+
     Scanner scanner;
-    public String[] linesArray;
-    int h, w;
-    Sprite wallSprite, bonusSprite, enemySprite;
+    public String[] linesArray; //схема карты
+    private int height, width; //высота и длина карты
+    public final int cellSize = 30;//размер клетки игрового поля
+    private Sprite wallSprite, bonusSprite, enemySprite;
     public Player player; //ссылка на персонажа
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+
     public Map() {
-        h = 0;
-        w = 0;
+        height = 0;
+        width = 0;
         wallSprite = new Sprite(new Texture("assets/wall.png"));
-        player = new Player(this, 50, 31);
+        player = new Player(this, 31, 31);
+        loadMap();
+    }
+
+    private void loadMap(){
+        List<String> lines = new ArrayList<String>();
         try {
             scanner = new Scanner(new File("maps/level1.txt"));
         } catch (Exception e) {
             e.printStackTrace();
         }
         while (scanner.hasNextLine()) {
-            h++;
+            height++;
             lines.add(scanner.nextLine());
         }
         linesArray = lines.toArray(new String[0]);
-        w = linesArray[0].length();
+        width = linesArray[0].length();
     }
 
     public void drawMap(SpriteBatch batch) {
-        for (int i = 0; i < h; i++)
-            for (int j = 0; j < w; j++) {
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++) {
                 if (linesArray[i].charAt(j) == 'B') {
-                    wallSprite.setX(j * 30);
-                    wallSprite.setY((h-1-i) * 30);
+                    wallSprite.setX(j * cellSize);
+                    wallSprite.setY((height - 1 - i) * cellSize);
                     batch.begin();
                     wallSprite.draw(batch);
                     batch.end();

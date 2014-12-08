@@ -1,7 +1,6 @@
 package com.supermario.game.model;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -22,6 +21,10 @@ public class Player {
     public int countLife = 3; //количество жизней
     public int count = 0;
     public Sprite playerSprite;
+    public final Vector2 playerSize = new Vector2(54,54);//Размер спрайта персонажа
+    public final int Gravity = 20;//Влияние гравитации
+    public final int SpeedX = 300;//Скорость движения по оси Х
+    public final int SpeedY = 400;//Скорость движения по оси Y
     Texture texture = new Texture(Gdx.files.internal("assets/player.png"));
 
     public Player(Map map, final float x, float y) {
@@ -36,30 +39,20 @@ public class Player {
         //отрисовка игрока в координатах х,у
     }
 
-
-    public void left() {
-    }
-
-    public void right() {
-    }
-
-    public void up(int f) {
-    }
-
-    float Collision(char dir, float x, float y) {
-        for (int i = (int) (18 - (y + 54) / 30); i <= (int) (18 - y / 30); i++)
-            for (int j = (int) x / 30; j <= (int) (x + 54) / 30; j++) {
+    float Collision(char dir, float x, float y) {//проверка на столкновение с объектами
+        for (int i = (int) (map.getHeight() - (y + playerSize.y) / map.cellSize); i <= (int) (map.getHeight() - y / map.cellSize); i++)
+            for (int j = (int) x / map.cellSize; j <= (int) (x + playerSize.x) / map.cellSize; j++) {
                 if (map.linesArray[i].charAt(j) == 'B') {
-                    if (dx > 0 && dir == 'x') x = j * 30 - 54 - 1;
-                    if (dx < 0 && dir == 'x') x = (j + 1) * 30 + 1;
+                    if (dx > 0 && dir == 'x') x = j * map.cellSize - playerSize.x - 1;
+                    if (dx < 0 && dir == 'x') x = (j + 1) * map.cellSize + 1;
                     if (dy > 0 && dir == 'y') {
-                        y = (18 - i - 1) * 30 - 54 - 1;
+                        y = (map.getHeight() - i - 1) * map.cellSize - playerSize.y - 1;
                         dy = 0;
                     }
                     if (dy < 0 && dir == 'y') {
                         grounded = true;
                         dy = 0;
-                        y = (18 - i) * 30 + 1;
+                        y = (map.getHeight() - i) * map.cellSize + 1;
                     }
                 }
             }
@@ -70,15 +63,15 @@ public class Player {
     public void playerMove() {
         point.x = Collision('x', point.x + dx * Gdx.graphics.getDeltaTime(), point.y);
         playerSprite.setX(point.x);
-        if (grounded && (map.linesArray[(int) ((18 - point.y / 30) + 1)]).charAt((int) point.x / 30) == ' ') {
-            dy = -400;
+        if (grounded && (map.linesArray[(int) ((map.getHeight() - point.y / map.cellSize) + 1)]).charAt((int) point.x / map.cellSize) == ' ') {
+            dy = -100;
             grounded = false;
         }
         dx = 0;
         if (!grounded) {
             point.y = Collision('y', point.x, point.y + dy * Gdx.graphics.getDeltaTime());
             playerSprite.setY(point.y);
-            dy -= 20;
+            dy -= Gravity;
         }
     }
 }

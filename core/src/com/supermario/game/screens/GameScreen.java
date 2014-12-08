@@ -2,17 +2,11 @@ package com.supermario.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.supermario.game.SuperMario;
 import com.supermario.game.bonus.Bonus;
 import com.supermario.game.model.Map;
-import com.supermario.game.model.Player;
 import com.supermario.game.renderers.MapRenderer;
-
-import java.awt.*;
 
 /**
  * Created by Анна on 30.11.2014.
@@ -32,22 +26,22 @@ public class GameScreen extends SuperMarioScreen {
         mapRenderer = new MapRenderer(map);
         mapRenderer.render(batch);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            map.player.dx = 300;
+            map.player.dx = map.player.SpeedX;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            map.player.dx = -300;
+            map.player.dx = -map.player.SpeedX;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             if (map.player.grounded) {
                 map.player.grounded = false;
-                map.player.dy = 400;
+                map.player.dy = map.player.SpeedY;
             }
         }
         map.player.playerMove();
-        if ((map.player.point.x > 300) && (map.player.point.x < 200 * 30 - 300)) {//не даем камере выйти за пределы карты
+        if ((map.player.point.x > SuperMario.WIDTH/2) && (map.player.point.x < map.getWidth() * map.cellSize - SuperMario.WIDTH/2)) {//не даем камере выйти за пределы карты
             camera.position.x = map.player.point.x;
         }
-        if ((map.player.point.y > 209) && (map.player.point.y < 17 * 30 - 209)) {
+        if ((map.player.point.y > SuperMario.HEIGHT/2) && (map.player.point.y < (map.getHeight()-1) * map.cellSize - SuperMario.HEIGHT/2)) {
             camera.position.y = map.player.point.y;
         }
         camera.update();
@@ -58,7 +52,7 @@ public class GameScreen extends SuperMarioScreen {
         map = new Map();
         Bonus.setTexture();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 600, 418);
+        camera.setToOrtho(false, SuperMario.WIDTH, SuperMario.HEIGHT);
         super.show();
     }
 
