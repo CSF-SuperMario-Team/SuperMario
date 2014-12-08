@@ -40,14 +40,14 @@ public class GameScreen extends SuperMarioScreen {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             if (map.player.grounded) {
                 map.player.grounded = false;
-                map.player.dy = 500;
+                map.player.dy = 400;
             }
         }
         map.player.playerMove();
         if ((map.player.point.x > 300) && (map.player.point.x < 200 * 30 - 300)) {//не даем камере выйти за пределы карты
             camera.position.x = map.player.point.x;
         }
-        if ((map.player.point.y > 209) && (map.player.point.y < 18 * 30 - 209)) {
+        if ((map.player.point.y > 209) && (map.player.point.y < 17 * 30 - 209)) {
             camera.position.y = map.player.point.y;
         }
         camera.update();

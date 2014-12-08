@@ -21,7 +21,6 @@ public class Player {
     public boolean grounded = true; // положение игрока: true - на земле, false - в воздухе
     public int countLife = 3; //количество жизней
     public int count = 0;
-
     public Sprite playerSprite;
     Texture texture = new Texture(Gdx.files.internal("assets/player.png"));
 
@@ -39,54 +38,47 @@ public class Player {
 
 
     public void left() {
-
     }
 
     public void right() {
-
     }
 
     public void up(int f) {
     }
 
-    void Collision(char dir) {
-        for (int i = (int) (18 - (point.y + 54) / 30); i <= (int) (18 - point.y / 30); i++)
-            for (int j = (int) point.x / 30; j <= (int) (point.x + 54) / 30; j++) {
+    float Collision(char dir, float x, float y) {
+        for (int i = (int) (18 - (y + 54) / 30); i <= (int) (18 - y / 30); i++)
+            for (int j = (int) x / 30; j <= (int) (x + 54) / 30; j++) {
                 if (map.linesArray[i].charAt(j) == 'B') {
-                    if (dx > 0 && dir == 'x') point.x = j * 30 - 54 - 1;
-                    if (dx < 0 && dir == 'x') point.x = (j + 1) * 30 + 1;
+                    if (dx > 0 && dir == 'x') x = j * 30 - 54 - 1;
+                    if (dx < 0 && dir == 'x') x = (j + 1) * 30 + 1;
                     if (dy > 0 && dir == 'y') {
-                        point.y = (18-i-1) * 30 - 54 - 1;
+                        y = (18 - i - 1) * 30 - 54 - 1;
                         dy = 0;
                     }
                     if (dy < 0 && dir == 'y') {
                         grounded = true;
                         dy = 0;
-
-                        point.y = (18 - i) * 30 + 1;
+                        y = (18 - i) * 30 + 1;
                     }
                 }
-
             }
-
+        if (dir == 'x') return x;
+        else return y;
     }
 
     public void playerMove() {
-        playerSprite.setX(point.x += dx * Gdx.graphics.getDeltaTime());
-        Collision('x');
-        if (grounded  && (map.linesArray[(int) ((18 - point.y / 30) + 1)]).charAt((int) point.x / 30) == ' ') {
+        point.x = Collision('x', point.x + dx * Gdx.graphics.getDeltaTime(), point.y);
+        playerSprite.setX(point.x);
+        if (grounded && (map.linesArray[(int) ((18 - point.y / 30) + 1)]).charAt((int) point.x / 30) == ' ') {
             dy = -400;
             grounded = false;
         }
         dx = 0;
         if (!grounded) {
-            playerSprite.setY(point.y += dy * Gdx.graphics.getDeltaTime());
+            point.y = Collision('y', point.x, point.y + dy * Gdx.graphics.getDeltaTime());
+            playerSprite.setY(point.y);
             dy -= 20;
-            Collision('y');
         }
-//        if (playerSprite.getY() <= 20) {
-//            dy = 0;
-//            grounded = true;
-//        }
     }
 }
