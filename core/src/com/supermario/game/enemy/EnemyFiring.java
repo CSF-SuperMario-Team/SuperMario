@@ -6,7 +6,7 @@ package com.supermario.game.enemy;
 public class EnemyFiring implements IEnemy{
 
     @Override
-    public void mooving() {
+    public void moving() {
 
     }
 }

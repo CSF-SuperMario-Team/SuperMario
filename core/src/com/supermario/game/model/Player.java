@@ -27,7 +27,7 @@ public class Player {
     public final int SpeedY = 400;//Скорость движения по оси Y
     Texture texture = new Texture(Gdx.files.internal("assets/player.png"));
 
-    public Player(Map map, final float x, float y) {
+    public Player(Map map, float x, float y) {
         dx = 0;
         dy = 0;
         this.map = map;
@@ -42,7 +42,7 @@ public class Player {
     float Collision(char dir, float x, float y) {//проверка на столкновение с объектами
         for (int i = (int) (map.getHeight() - (y + playerSize.y) / map.cellSize); i <= (int) (map.getHeight() - y / map.cellSize); i++)
             for (int j = (int) x / map.cellSize; j <= (int) (x + playerSize.x) / map.cellSize; j++) {
-                if (map.linesArray[i].charAt(j) == 'B') {
+                if (map.charMapArray[i][j] == 'B') {// Стены
                     if (dx > 0 && dir == 'x') x = j * map.cellSize - playerSize.x - 1;
                     if (dx < 0 && dir == 'x') x = (j + 1) * map.cellSize + 1;
                     if (dy > 0 && dir == 'y') {
@@ -55,6 +55,9 @@ public class Player {
                         y = (map.getHeight() - i) * map.cellSize + 1;
                     }
                 }
+                if (map.charMapArray[i][j] == 'D') { // Бонусы
+                    map.charMapArray[i][j] = ' ';
+                }
             }
         if (dir == 'x') return x;
         else return y;
@@ -63,7 +66,7 @@ public class Player {
     public void playerMove() {
         point.x = Collision('x', point.x + dx * Gdx.graphics.getDeltaTime(), point.y);
         playerSprite.setX(point.x);
-        if (grounded && (map.linesArray[(int) ((map.getHeight() - point.y / map.cellSize) + 1)]).charAt((int) point.x / map.cellSize) == ' ') {
+        if (grounded && (map.charMapArray[(int) ((map.getHeight() - point.y / map.cellSize) + 1)][(int) point.x / map.cellSize]) == ' ') {
             dy = -100;
             grounded = false;
         }

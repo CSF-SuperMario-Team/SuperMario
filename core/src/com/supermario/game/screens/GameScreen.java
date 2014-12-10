@@ -2,9 +2,11 @@ package com.supermario.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.supermario.game.SuperMario;
 import com.supermario.game.bonus.Bonus;
+import com.supermario.game.enemy.EnemyWalker;
 import com.supermario.game.model.Map;
 import com.supermario.game.renderers.MapRenderer;
 
@@ -23,7 +25,6 @@ public class GameScreen extends SuperMarioScreen {
     public void render(float delta) {
         super.render(delta);
         batch.setProjectionMatrix(camera.combined);
-        mapRenderer = new MapRenderer(map);
         mapRenderer.render(batch);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             map.player.dx = map.player.SpeedX;
@@ -38,10 +39,13 @@ public class GameScreen extends SuperMarioScreen {
             }
         }
         map.player.playerMove();
-        if ((map.player.point.x > SuperMario.WIDTH/2) && (map.player.point.x < map.getWidth() * map.cellSize - SuperMario.WIDTH/2)) {//не даем камере выйти за пределы карты
+        for (EnemyWalker e : map.enemies) {
+            e.moving();
+        }
+        if ((map.player.point.x > SuperMario.WIDTH / 2) && (map.player.point.x < map.getWidth() * map.cellSize - SuperMario.WIDTH / 2)) {//не даем камере выйти за пределы карты
             camera.position.x = map.player.point.x;
         }
-        if ((map.player.point.y > SuperMario.HEIGHT/2) && (map.player.point.y < (map.getHeight()-1) * map.cellSize - SuperMario.HEIGHT/2)) {
+        if ((map.player.point.y > SuperMario.HEIGHT / 2) && (map.player.point.y < (map.getHeight() - 1) * map.cellSize - SuperMario.HEIGHT / 2)) {
             camera.position.y = map.player.point.y;
         }
         camera.update();
@@ -49,11 +53,12 @@ public class GameScreen extends SuperMarioScreen {
 
     @Override
     public void show() {
-        map = new Map();
-        Bonus.setTexture();
+        super.show();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SuperMario.WIDTH, SuperMario.HEIGHT);
-        super.show();
+        map = new Map(batch);
+        mapRenderer = new MapRenderer(map);
+        Bonus.setTexture();
     }
 
 
