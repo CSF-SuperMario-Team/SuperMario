@@ -20,8 +20,10 @@ public class Player {
     public boolean grounded = true; // положение игрока: true - на земле, false - в воздухе
     public int countLife = 3; //количество жизней
     public int count = 0;
-    public Sprite playerSprite;
-    public final Vector2 playerSize = new Vector2(54,54);//Размер спрайта персонажа
+    public Sprite playerSprite,liveSprite;
+    public final Vector2 playerSize = new Vector2(54, 54);//Размер спрайта персонажа
+    public boolean isFinished = false;//достиг ли игрок конца уровня
+    public boolean stunned = false;//Оглушен ли игрок врагом
     public final int Gravity = 20;//Влияние гравитации
     public final int SpeedX = 300;//Скорость движения по оси Х
     public final int SpeedY = 400;//Скорость движения по оси Y
@@ -32,6 +34,7 @@ public class Player {
         dy = 0;
         this.map = map;
         point = new Vector2(x, y);
+        liveSprite = new Sprite(new Texture(Gdx.files.internal("assets/live.png")));
         playerSprite = new Sprite(texture) {{
             setX(point.x);
             setY(point.y);
@@ -50,9 +53,14 @@ public class Player {
                         dy = 0;
                     }
                     if (dy < 0 && dir == 'y') {
+                        if(stunned)
+                            stunned = false;
                         grounded = true;
                         dy = 0;
                         y = (map.getHeight() - i) * map.cellSize + 1;
+                    }
+                    if (j>map.getWidth()-5){
+                        isFinished = true;
                     }
                 }
                 if (map.charMapArray[i][j] == 'D') { // Бонусы
@@ -63,6 +71,17 @@ public class Player {
         else return y;
     }
 
+
+    public void getDamage(int dir) {// Получение урона от врагов. Пока игрок оглушен он не может менять направление движения
+        texture = new Texture(Gdx.files.internal("assets/playerd.png"));
+        playerSprite.setTexture(texture);
+        stunned = true;
+        dy = 200;
+        grounded = false;
+        dx = -dir;
+        countLife--;
+    }
+
     public void playerMove() {
         point.x = Collision('x', point.x + dx * Gdx.graphics.getDeltaTime(), point.y);
         playerSprite.setX(point.x);
@@ -70,7 +89,8 @@ public class Player {
             dy = -100;
             grounded = false;
         }
-        dx = 0;
+        if (!stunned)
+            dx = 0;
         if (!grounded) {
             point.y = Collision('y', point.x, point.y + dy * Gdx.graphics.getDeltaTime());
             playerSprite.setY(point.y);

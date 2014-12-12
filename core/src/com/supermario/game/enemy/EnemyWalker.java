@@ -10,7 +10,9 @@ import com.supermario.game.model.Map;
  * Created by Анна on 06.12.2014.
  */
 public class EnemyWalker implements IEnemy {
+
     public Vector2 point, size;
+    public boolean live;
     int dx = -200;
     Map map;
     public Sprite sprite;
@@ -23,6 +25,7 @@ public class EnemyWalker implements IEnemy {
         sprite.setX(x);
         sprite.setY(y);
         size = new Vector2(30, 30);
+        live = true;
     }
 
     void Collision(float x, float y) {//проверка на столкновение с объектами
@@ -38,5 +41,16 @@ public class EnemyWalker implements IEnemy {
     public void moving() {
         Collision(point.x += dx * Gdx.graphics.getDeltaTime(), point.y);
         sprite.setX(point.x);
+        if (live && (point.x >= (map.player.point.x - size.x)) && (point.x <= (map.player.point.x + map.player.playerSize.x)) && (Math.abs(point.y - map.player.point.y) <= size.y)) {//somnitelno blya
+            if (!map.player.grounded && map.player.dy<0) {
+                map.player.dy = 200;
+                map.player.grounded = false;
+                dx = 0;
+                live = false;
+            } else {
+                dx *= -1;
+                map.player.getDamage(dx);
+            }
+        }
     }
 }

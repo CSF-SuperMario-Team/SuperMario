@@ -18,9 +18,13 @@ public class MapRenderer {
     public void render(SpriteBatch batch) {
         map.drawMap();
         batch.begin();
+
         map.player.playerSprite.draw(batch);
         for (EnemyWalker enemy : map.enemies) {
             enemy.sprite.draw(batch);
+        }
+        for (int i = 0;i<map.player.countLife;i++){
+            map.player.liveSprite.draw(batch);
         }
         batch.end();
     }

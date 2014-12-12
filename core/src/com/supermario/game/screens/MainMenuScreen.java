@@ -56,7 +56,7 @@ public class MainMenuScreen extends SuperMarioScreen {
                 screenY = SuperMario.HEIGHT - screenY; //инверсия координаты у
 
                 if (new Rectangle(20, 340, 210, 80).contains(screenX,screenY)) //нажали на начало игры
-                    game.setScreen(new GameScreen());
+                    game.setScreen(new GameScreen(game));
 
                 if (new Rectangle(245, 0, 355, 120).contains(screenX,screenY))  //нажали на таблицу лучших результатов
                     game.setScreen(new StoreScreen());

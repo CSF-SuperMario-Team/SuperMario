@@ -1,5 +1,6 @@
 package com.supermario.game.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,26 +22,35 @@ public class GameScreen extends SuperMarioScreen {
     Map map;
     OrthographicCamera camera;
 
+    public GameScreen(Game g){
+        this.game = g;
+    }
+
     @Override
     public void render(float delta) {
         super.render(delta);
         batch.setProjectionMatrix(camera.combined);
         mapRenderer.render(batch);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            map.player.dx = map.player.SpeedX;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            map.player.dx = -map.player.SpeedX;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            if (map.player.grounded) {
-                map.player.grounded = false;
-                map.player.dy = map.player.SpeedY;
+        if (!map.player.stunned) {
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                map.player.dx = map.player.SpeedX;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                map.player.dx = -map.player.SpeedX;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                if (map.player.grounded) {
+                    map.player.grounded = false;
+                    map.player.dy = map.player.SpeedY;
+                }
             }
         }
         map.player.playerMove();
         for (EnemyWalker e : map.enemies) {
             e.moving();
+        }
+        if(map.player.countLife==0 || map.player.isFinished){
+            game.setScreen(new EndGameScreen());
         }
         if ((map.player.point.x > SuperMario.WIDTH / 2) && (map.player.point.x < map.getWidth() * map.cellSize - SuperMario.WIDTH / 2)) {//не даем камере выйти за пределы карты
             camera.position.x = map.player.point.x;
@@ -60,6 +70,4 @@ public class GameScreen extends SuperMarioScreen {
         mapRenderer = new MapRenderer(map);
         Bonus.setTexture();
     }
-
-
 }
