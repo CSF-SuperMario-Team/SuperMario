@@ -1,11 +1,17 @@
 package com.supermario.game.model;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.supermario.game.SuperMario;
+import com.supermario.game.bonus.Bonus;
+import com.supermario.game.bonus.RubBonus;
 
-import java.awt.*;
 
 /**
  * Created by Анна on 30.11.2014.
@@ -20,7 +26,9 @@ public class Player {
     public boolean grounded = true; // положение игрока: true - на земле, false - в воздухе
     public int countLife = 3; //количество жизней
     public int count = 0;
-    public Sprite playerSprite,liveSprite;
+    BitmapFont font = new BitmapFont(Gdx.files.internal("font/1.fnt"), new Sprite(new Texture("font/1.png")), false);
+    public Label labelPoints;
+    public Sprite playerSprite, liveSprite;
     public final Vector2 playerSize = new Vector2(54, 54);//Размер спрайта персонажа
     public boolean isFinished = false;//достиг ли игрок конца уровня
     public boolean stunned = false;//Оглушен ли игрок врагом
@@ -29,17 +37,32 @@ public class Player {
     public final int SpeedY = 400;//Скорость движения по оси Y
     Texture texture = new Texture(Gdx.files.internal("assets/player.png"));
 
-    public Player(Map map, float x, float y) {
+    public Player(final Map map, float x, float y) {
         dx = 0;
         dy = 0;
         this.map = map;
+        labelPoints = new Label("0", new Label.LabelStyle(font, Color.LIGHT_GRAY)) {
+            {
+                setX(SuperMario.WIDTH - 70);
+                setY(SuperMario.HEIGHT - map.cellSize);
+            }
+        };
         point = new Vector2(x, y);
-        liveSprite = new Sprite(new Texture(Gdx.files.internal("assets/live.png")));
+        liveSprite = new Sprite(new Texture(Gdx.files.internal("assets/live.png"))) {
+            {
+                setX(10);
+                setY(SuperMario.HEIGHT - map.cellSize);
+            }
+        };
         playerSprite = new Sprite(texture) {{
             setX(point.x);
             setY(point.y);
         }};
         //отрисовка игрока в координатах х,у
+    }
+
+    public void setCount(){
+        labelPoints.setText(Integer.toString(count));
     }
 
     float Collision(char dir, float x, float y) {//проверка на столкновение с объектами
@@ -53,18 +76,25 @@ public class Player {
                         dy = 0;
                     }
                     if (dy < 0 && dir == 'y') {
-                        if(stunned)
+                        if (stunned)
                             stunned = false;
                         grounded = true;
                         dy = 0;
                         y = (map.getHeight() - i) * map.cellSize + 1;
                     }
-                    if (j>map.getWidth()-5){
+                    if (j > map.getWidth() - 5) {
                         isFinished = true;
                     }
                 }
-                if (map.charMapArray[i][j] == 'D') { // Бонусы
+                if (map.charMapArray[i][j] == 'D') { // Бонус доллар
+                    map.dollar.make(this);
                     map.charMapArray[i][j] = ' ';
+                    Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x,point.y+playerSize.y);
+                }
+                if (map.charMapArray[i][j] == 'P') { // Бонус рубль
+                    map.ruble.make(this);
+                    map.charMapArray[i][j] = ' ';
+                    Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x,point.y+playerSize.y);
                 }
             }
         if (dir == 'x') return x;
@@ -95,6 +125,13 @@ public class Player {
             point.y = Collision('y', point.x, point.y + dy * Gdx.graphics.getDeltaTime());
             playerSprite.setY(point.y);
             dy -= Gravity;
+        }
+        for(Label l:Bonus.labels){
+            l.setY(l.getY()+100*Gdx.graphics.getDeltaTime());
+            if (l.getY()>540){
+                Bonus.labels.remove(l);
+                break;
+            }
         }
     }
 }

@@ -3,9 +3,9 @@ package com.supermario.game.model;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.supermario.game.bonus.DolBonus;
+import com.supermario.game.bonus.RubBonus;
 import com.supermario.game.enemy.EnemyWalker;
-import com.supermario.game.enemy.IEnemy;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,9 +27,11 @@ public class Map {
     public char[][] charMapArray;
     private int height, width; //высота и длина карты
     public final int cellSize = 30;//размер клетки игрового поля
-    private Sprite wallSprite, bonusSprite, enemySprite;
+    private Sprite wallSprite, dolSprite, rubSprite;
     public Player player; //ссылка на персонажа
     public ArrayList<EnemyWalker> enemies = new ArrayList<EnemyWalker>();
+    public DolBonus dollar;
+    public RubBonus ruble;
 
     public int getHeight() {
         return height;
@@ -40,12 +42,14 @@ public class Map {
     }
 
     public Map(SpriteBatch batch) {
+        dollar = new DolBonus();
+        ruble = new RubBonus();
         height = 0;
         width = 0;
         batchMap = batch;
         wallSprite = new Sprite(new Texture("assets/wall.png"));
-        bonusSprite = new Sprite(new Texture("assets/bonus.png"));
-        enemySprite = new Sprite(new Texture("assets/enemy.png"));
+        dolSprite = new Sprite(new Texture("assets/ddol.png"));
+        rubSprite = new Sprite(new Texture("assets/rrub.png"));
         player = new Player(this, 31, 31);
         loadMap();
     }
@@ -84,7 +88,10 @@ public class Map {
                             enemies.add(new EnemyWalker(this, j * 30, (height - i - 1) * 30));
                         break;
                     case 'D':
-                        setSprite(bonusSprite, j, i);
+                        setSprite(dolSprite, j, i);
+                        break;
+                    case 'P':
+                        setSprite(rubSprite, j, i);
                         break;
                     default:
                         break;
