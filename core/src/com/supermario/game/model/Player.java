@@ -2,15 +2,14 @@ package com.supermario.game.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.supermario.game.SuperMario;
 import com.supermario.game.bonus.Bonus;
-import com.supermario.game.bonus.RubBonus;
 
 
 /**
@@ -21,21 +20,25 @@ import com.supermario.game.bonus.RubBonus;
 public class Player {
 
     public int dx, dy; // ускорение по оси Х и Y
-    Map map; //карта
+    private Map map; //карта
     public Vector2 point; //вектор, хранит текущее положение игрока
     public boolean grounded = true; // положение игрока: true - на земле, false - в воздухе
     public int countLife = 3; //количество жизней
-    public int count = 0;
-    BitmapFont font = new BitmapFont(Gdx.files.internal("font/1.fnt"), new Sprite(new Texture("font/1.png")), false);
+    public int count = 0; //количество очков
+    private BitmapFont font = new BitmapFont(Gdx.files.internal("font/1.fnt"), new Sprite(new Texture("font/1.png")), false);
     public Label labelPoints;
     public Sprite playerSprite, liveSprite;
-    public final Vector2 playerSize = new Vector2(54, 54);//Размер спрайта персонажа
+    public final Vector2 playerSize = new Vector2(59, 68);//Размер спрайта персонажа
+    public Animation walkAnimation;
     public boolean isFinished = false;//достиг ли игрок конца уровня
     public boolean stunned = false;//Оглушен ли игрок врагом
     public final int Gravity = 20;//Влияние гравитации
-    public final int SpeedX = 300;//Скорость движения по оси Х
+    public final int SpeedX = 200;//Скорость движения по оси Х
     public final int SpeedY = 400;//Скорость движения по оси Y
-    Texture texture = new Texture(Gdx.files.internal("assets/player.png"));
+    private Texture texture = new Texture(Gdx.files.internal("assets/put.png"));// анимационный лист
+    private TextureRegion[] walkPutin = new TextureRegion[8];
+    private float stateTime = 0;
+    private TextureRegion currentFrame;
 
     public Player(final Map map, float x, float y) {
         dx = 0;
@@ -47,6 +50,11 @@ public class Player {
                 setY(SuperMario.HEIGHT - map.cellSize);
             }
         };
+        TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 8, texture.getHeight());
+        for (int i = 0; i < 8; i++) {
+            walkPutin[i] = tmp[0][i];
+        }
+        walkAnimation = new Animation(0.1f, walkPutin);
         point = new Vector2(x, y);
         liveSprite = new Sprite(new Texture(Gdx.files.internal("assets/live.png"))) {
             {
@@ -54,14 +62,18 @@ public class Player {
                 setY(SuperMario.HEIGHT - map.cellSize);
             }
         };
-        playerSprite = new Sprite(texture) {{
-            setX(point.x);
-            setY(point.y);
-        }};
+        playerSprite = new Sprite(walkPutin[0].getTexture(), walkPutin[0].getRegionWidth(), walkPutin[0].getRegionHeight()) {
+            {
+                setX(point.x);
+                setY(point.y);
+                setScale(getScaleX()*-1,getScaleY());
+            }
+        };
+
         //отрисовка игрока в координатах х,у
     }
 
-    public void setCount(){
+    public void setCount() {// отбражение очков на экране
         labelPoints.setText(Integer.toString(count));
     }
 
@@ -89,12 +101,12 @@ public class Player {
                 if (map.charMapArray[i][j] == 'D') { // Бонус доллар
                     map.dollar.make(this);
                     map.charMapArray[i][j] = ' ';
-                    Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x,point.y+playerSize.y);
+                    Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x, point.y + playerSize.y);
                 }
                 if (map.charMapArray[i][j] == 'P') { // Бонус рубль
                     map.ruble.make(this);
                     map.charMapArray[i][j] = ' ';
-                    Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x,point.y+playerSize.y);
+                    Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x, point.y + playerSize.y);
                 }
             }
         if (dir == 'x') return x;
@@ -103,13 +115,22 @@ public class Player {
 
 
     public void getDamage(int dir) {// Получение урона от врагов. Пока игрок оглушен он не может менять направление движения
-        texture = new Texture(Gdx.files.internal("assets/playerd.png"));
-        playerSprite.setTexture(texture);
+//        texture = new Texture(Gdx.files.internal("assets/playerd.png"));
+//        playerSprite.setTexture(texture);
         stunned = true;
         dy = 200;
         grounded = false;
         dx = -dir;
         countLife--;
+    }
+
+    public void playerAnimation(int dir){// Анимация игрока
+        stateTime+=Gdx.graphics.getDeltaTime();
+        currentFrame = walkAnimation.getKeyFrame(stateTime,true);
+        playerSprite.setRegion(currentFrame);
+        if(playerSprite.getScaleX()*dir<0){
+            playerSprite.setScale(playerSprite.getScaleX()*-1,playerSprite.getScaleY());
+        }
     }
 
     public void playerMove() {
@@ -126,9 +147,9 @@ public class Player {
             playerSprite.setY(point.y);
             dy -= Gravity;
         }
-        for(Label l:Bonus.labels){
-            l.setY(l.getY()+100*Gdx.graphics.getDeltaTime());
-            if (l.getY()>540){
+        for (Label l : Bonus.labels) {
+            l.setY(l.getY() + 100 * Gdx.graphics.getDeltaTime());
+            if (l.getY() > 540) {
                 Bonus.labels.remove(l);
                 break;
             }

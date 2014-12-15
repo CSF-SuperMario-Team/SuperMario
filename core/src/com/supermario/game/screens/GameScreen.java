@@ -37,14 +37,15 @@ public class GameScreen extends SuperMarioScreen {
     public void render(float delta) {
         super.render(delta);
         batch.setProjectionMatrix(camera.combined);
-
         mapRenderer.render(batch);
         if (!map.player.stunned) {
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 map.player.dx = map.player.SpeedX;
+                map.player.playerAnimation(-1);
             }
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 map.player.dx = -map.player.SpeedX;
+                map.player.playerAnimation(1);
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 if (map.player.grounded) {
