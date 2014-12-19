@@ -66,7 +66,7 @@ public class GameScreen extends SuperMarioScreen {
             map.player.liveSprite.setX(map.player.point.x - SuperMario.WIDTH / 2 + 10);
             map.player.labelPoints.setX(map.player.point.x + SuperMario.WIDTH / 2 - 70);
         }
-        if ((map.player.point.y > SuperMario.HEIGHT / 2) && (map.player.point.y < (map.getHeight() - 1) * map.cellSize - SuperMario.HEIGHT / 2)) {
+        if ((map.player.point.y > SuperMario.HEIGHT / 2) && (map.player.point.y < (map.getHeight()-1) * map.cellSize - SuperMario.HEIGHT / 2)) {
             camera.position.y = map.player.point.y;
             map.player.liveSprite.setY(map.player.point.y + 6 * map.cellSize);
             map.player.labelPoints.setY(map.player.point.y + 6 * map.cellSize);

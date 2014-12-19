@@ -3,11 +3,13 @@ package com.supermario.game.model;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.supermario.game.bonus.DolBonus;
 import com.supermario.game.bonus.RubBonus;
 import com.supermario.game.enemy.EnemyWalker;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +23,7 @@ public class Map {
 
 
     Scanner scanner;
-    public boolean isDrawing = false;
+    public boolean isDrawing;
     private SpriteBatch batchMap;
     private String[] linesArray; //схема карты
     public char[][] charMapArray;
@@ -32,6 +34,7 @@ public class Map {
     public ArrayList<EnemyWalker> enemies = new ArrayList<EnemyWalker>();
     public DolBonus dollar;
     public RubBonus ruble;
+    private int w, h, ws, hs;
 
     public int getHeight() {
         return height;
@@ -47,6 +50,7 @@ public class Map {
         height = 0;
         width = 0;
         batchMap = batch;
+        isDrawing = false;
         wallSprite = new Sprite(new Texture("assets/wall.png"));
         dolSprite = new Sprite(new Texture("assets/ddol.png"));
         rubSprite = new Sprite(new Texture("assets/rrub.png"));
@@ -76,9 +80,72 @@ public class Map {
             }
     }
 
+    void getViewSize() {
+        float x = player.point.x / 30;
+        float y = player.point.y / 30;
+        if (height - y > height - 7) {
+            hs = height - 15;
+            h = height;
+        } else {
+            hs = (int) (height - y - 7);
+            h = (int) (height - y + 8);
+        }
+        if (height - y <= 7) {
+            hs = 0;
+            h = 15;
+        }
+        if (x <= 10) {
+            ws = 0;
+            w = 21;
+        } else {
+            ws = (int) x - 10;
+            w = (int) x + 11;
+        }
+        if (x >= width - 10) {
+            ws = width - 21;
+            w = width;
+        }
+        if (!isDrawing) {
+            w = width;
+            ws = 0;
+            h = height;
+            hs = 0;
+        }
+    }
+
     public void drawMap() {
-        for (int i = 0; i < height; i++)
-            for (int j = 0; j < width; j++) {
+//        int w, h, ws, hs;
+//        w = width;
+//        ws = 0;
+//        h = height;
+//        hs = 0;
+//        if (isDrawing) {
+//            if(height-tmp.y>height-7){
+//                hs =height-15;
+//                h = height;
+//            } else {
+//                hs = (int)(height-tmp.y-7);
+//                h = (int)(height-tmp.y+8);
+//            }
+//            if (height-tmp.y<=7){
+//                hs = 0;
+//                h = 15;
+//            }
+//            if (tmp.x <= 10) {
+//                w = 21;
+//                ws = 0;
+//            } else {
+//                ws = (int) tmp.x - 10;
+//                w = (int) tmp.x + 11;
+//            }
+//            if (tmp.x >= width - 10) {
+//                ws = width - 21;
+//                w = width;
+//            }
+//        }
+        getViewSize();
+        for (int i = hs; i < h; i++)
+            for (int j = ws; j < w; j++) {
                 switch (charMapArray[i][j]) {
                     case 'B':
                         setSprite(wallSprite, j, i);

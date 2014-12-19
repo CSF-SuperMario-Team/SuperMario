@@ -33,8 +33,8 @@ public class Player {
     public boolean isFinished = false;//достиг ли игрок конца уровня
     public boolean stunned = false;//Оглушен ли игрок врагом
     public final int Gravity = 20;//Влияние гравитации
-    public final int SpeedX = 200;//Скорость движения по оси Х
-    public final int SpeedY = 400;//Скорость движения по оси Y
+    public final int SpeedX = 500;//Скорость движения по оси Х
+    public final int SpeedY = 600;//Скорость движения по оси Y
     private Texture texture = new Texture(Gdx.files.internal("assets/put.png"));// анимационный лист
     private TextureRegion[] walkPutin = new TextureRegion[8];
     private float stateTime = 0;
