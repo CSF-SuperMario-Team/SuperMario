@@ -59,7 +59,8 @@ public class GameScreen extends SuperMarioScreen {
             e.moving();
         }
         if (map.player.countLife == 0 || map.player.isFinished) {
-            game.setScreen(new EndGameScreen());
+            dispose();
+            game.setScreen(new EndGameScreen(game));
         }
         if ((map.player.point.x > SuperMario.WIDTH / 2) && (map.player.point.x < map.getWidth() * map.cellSize - SuperMario.WIDTH / 2)) {//не даем камере выйти за пределы карты
             camera.position.x = map.player.point.x;
@@ -84,5 +85,11 @@ public class GameScreen extends SuperMarioScreen {
         map = new Map(batch);
         mapRenderer = new MapRenderer(map);
         Bonus.setTexture();
+    }
+
+    @Override
+    public void dispose(){
+        batch.dispose();
+        map.dispose();
     }
 }

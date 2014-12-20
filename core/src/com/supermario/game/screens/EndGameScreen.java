@@ -1,8 +1,13 @@
 package com.supermario.game.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.supermario.game.SuperMario;
+
+import java.awt.*;
 
 /**
  * Created by Анна on 30.11.2014.
@@ -13,8 +18,8 @@ public class EndGameScreen extends SuperMarioScreen {
 
     Sprite sprite;
 
-    public EndGameScreen() {
-
+    public EndGameScreen(Game g) {
+        this.game = g;
     }
 
     @Override
@@ -34,5 +39,16 @@ public class EndGameScreen extends SuperMarioScreen {
                 setY(0);
             }
         };
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                screenY = SuperMario.HEIGHT - screenY; //инверсия координаты у
+
+                if (new Rectangle(0, 0, 600, 420).contains(screenX,screenY)) //нажали на начало игры
+                    game.setScreen(new GameScreen(game));
+
+                return true;
+            }
+        });
     }
 }

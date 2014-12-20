@@ -18,7 +18,7 @@ import java.awt.*;
 
 public class MainMenuScreen extends SuperMarioScreen {
 
-    Sprite hello;
+    private Sprite hello;
 
     public  MainMenuScreen (Game game) {
         this.game = game;
@@ -27,24 +27,14 @@ public class MainMenuScreen extends SuperMarioScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-
         batch.begin();
-
         hello.draw(batch); //загрузка изображения начала игры
-
-        /*ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(1, 1, 0, 1);
-        shapeRenderer.rect(245, 0, 355, 120);
-        shapeRenderer.end();*/
-
         batch.end();
     }
 
     @Override
     public void show() {
         super.show();
-
         hello = new Sprite(new Texture(Gdx.files.internal("assets/hellowindow.png"))) {{
             setX(0);
             setY(0);

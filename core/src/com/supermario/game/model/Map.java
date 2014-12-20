@@ -22,7 +22,7 @@ import java.util.Scanner;
 public class Map {
 
 
-    Scanner scanner;
+    private Scanner scanner;
     public boolean isDrawing;
     private SpriteBatch batchMap;
     private String[] linesArray; //схема карты
@@ -62,22 +62,23 @@ public class Map {
         List<String> lines = new ArrayList<String>();
         try {
             scanner = new Scanner(new File("maps/level1.txt"));
+
+            while (scanner.hasNextLine()) {
+                height++;
+                lines.add(scanner.nextLine());
+            }
+            linesArray = lines.toArray(new String[0]);
+            width = linesArray[0].length();
+            charMapArray = new char[height][width];
+            for (int i = 0; i < height; i++)
+                for (int j = 0; j < width; j++) {
+                    charMapArray[i][j] = linesArray[i].charAt(j);
+                }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            scanner.close();
         }
-        while (scanner.hasNextLine()) {
-            height++;
-            lines.add(scanner.nextLine());
-        }
-
-
-        linesArray = lines.toArray(new String[0]);
-        width = linesArray[0].length();
-        charMapArray = new char[height][width];
-        for (int i = 0; i < height; i++)
-            for (int j = 0; j < width; j++) {
-                charMapArray[i][j] = linesArray[i].charAt(j);
-            }
     }
 
     void getViewSize() {
@@ -173,6 +174,16 @@ public class Map {
         batchMap.begin();
         sprite.draw(batchMap);
         batchMap.end();
+    }
+
+    public void dispose() {
+        wallSprite.getTexture().dispose();
+        dolSprite.getTexture().dispose();
+        rubSprite.getTexture().dispose();
+        player.dispose();
+        for (EnemyWalker e : enemies) {
+            e.sprite.getTexture().dispose();
+        }
     }
 
 }

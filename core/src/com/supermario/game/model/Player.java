@@ -155,4 +155,8 @@ public class Player {
             }
         }
     }
+    public void dispose(){
+        font.dispose();
+        texture.dispose();
+    }
 }
