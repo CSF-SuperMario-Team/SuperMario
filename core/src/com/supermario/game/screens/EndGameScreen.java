@@ -26,7 +26,9 @@ public class EndGameScreen extends SuperMarioScreen {
     public void render(float delta) {
         super.render(delta);
         batch.begin();
+//        batch.draw(sprite.getTexture(),0,0,Window.WIDTH,Window.HEIGHT);
         sprite.draw(batch);
+//        batch.draw(sprite.getTexture(),0,0);
         batch.end();
     }
 
@@ -39,13 +41,15 @@ public class EndGameScreen extends SuperMarioScreen {
                 setY(0);
             }
         };
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 screenY = SuperMario.HEIGHT - screenY; //инверсия координаты у
-
-                if (new Rectangle(0, 0, 600, 420).contains(screenX,screenY)) //нажали на начало игры
-                    game.setScreen(new GameScreen(game));
+                if(SuperMario.currentLevel<4) {
+                    if (new Rectangle(0, 0, 600, 420).contains(screenX, screenY)) //нажали на начало игры
+                        game.setScreen(new GameScreen(game));
+                }
 
                 return true;
             }

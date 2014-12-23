@@ -28,7 +28,7 @@ public class Player {
     private BitmapFont font = new BitmapFont(Gdx.files.internal("font/1.fnt"), new Sprite(new Texture("font/1.png")), false);
     public Label labelPoints;
     public Sprite playerSprite, liveSprite;
-    public final Vector2 playerSize = new Vector2(59, 68);//Размер спрайта персонажа
+    public final Vector2 playerSize = new Vector2(53, 68);//Размер спрайта персонажа
     public Animation walkAnimation;
     public boolean isFinished = false;//достиг ли игрок конца уровня
     public boolean stunned = false;//Оглушен ли игрок врагом
@@ -39,6 +39,7 @@ public class Player {
     private TextureRegion[] walkPutin = new TextureRegion[8];
     private float stateTime = 0;
     private TextureRegion currentFrame;
+    public boolean isGameStart = false;
 
     public Player(final Map map, float x, float y) {
         dx = 0;
@@ -80,7 +81,7 @@ public class Player {
     float Collision(char dir, float x, float y) {//проверка на столкновение с объектами
         for (int i = (int) (map.getHeight() - (y + playerSize.y) / map.cellSize); i <= (int) (map.getHeight() - y / map.cellSize); i++)
             for (int j = (int) x / map.cellSize; j <= (int) (x + playerSize.x) / map.cellSize; j++) {
-                if (map.charMapArray[i][j] == 'B') {// Стены
+                if (map.charMapArray[i][j] == 'B' || map.charMapArray[i][j] == 'S' || map.charMapArray[i][j] == 'G' || map.charMapArray[i][j] == 'T'|| map.charMapArray[i][j] == 'I') {// Стены
                     if (dx > 0 && dir == 'x') x = j * map.cellSize - playerSize.x - 1;
                     if (dx < 0 && dir == 'x') x = (j + 1) * map.cellSize + 1;
                     if (dy > 0 && dir == 'y') {
@@ -118,10 +119,14 @@ public class Player {
 //        texture = new Texture(Gdx.files.internal("assets/playerd.png"));
 //        playerSprite.setTexture(texture);
         stunned = true;
-        dy = 200;
+        dy = 400;
         grounded = false;
-        dx = -dir;
-        countLife--;
+        if(dir>0){
+        dx = -300;
+        }else {
+            dx = 300;
+        }
+//        countLife--;
     }
 
     public void playerAnimation(int dir){// Анимация игрока

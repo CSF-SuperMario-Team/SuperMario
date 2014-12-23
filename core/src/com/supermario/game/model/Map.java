@@ -4,9 +4,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.supermario.game.SuperMario;
 import com.supermario.game.bonus.DolBonus;
 import com.supermario.game.bonus.RubBonus;
+import com.supermario.game.enemy.EnemyFiring;
 import com.supermario.game.enemy.EnemyWalker;
+import com.supermario.game.enemy.IEnemy;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -29,9 +32,10 @@ public class Map {
     public char[][] charMapArray;
     private int height, width; //высота и длина карты
     public final int cellSize = 30;//размер клетки игрового поля
-    private Sprite wallSprite, dolSprite, rubSprite;
+    private Sprite wallSprite, dolSprite, rubSprite, brickSprite,tubeSprite,groundSprite;
+    public Sprite backSprite;
     public Player player; //ссылка на персонажа
-    public ArrayList<EnemyWalker> enemies = new ArrayList<EnemyWalker>();
+    public ArrayList<IEnemy> enemies = new ArrayList<IEnemy>();
     public DolBonus dollar;
     public RubBonus ruble;
     private int w, h, ws, hs;
@@ -54,15 +58,21 @@ public class Map {
         wallSprite = new Sprite(new Texture("assets/wall.png"));
         dolSprite = new Sprite(new Texture("assets/ddol.png"));
         rubSprite = new Sprite(new Texture("assets/rrub.png"));
+        brickSprite = new Sprite(new Texture("assets/brick.png"));
+        tubeSprite = new Sprite(new Texture("assets/tube.png"));
+        groundSprite = new Sprite(new Texture("assets/ground.png"));
+        backSprite = new Sprite(new Texture("assets/back2.png"));
         player = new Player(this, 31, 31);
         loadMap();
     }
 
+    public SpriteBatch getBatch(){
+        return this.batchMap;
+    }
     private void loadMap() {
         List<String> lines = new ArrayList<String>();
         try {
-            scanner = new Scanner(new File("maps/level1.txt"));
-
+            scanner = new Scanner(new File("maps/" + SuperMario.currentLevel + ".txt"));
             while (scanner.hasNextLine()) {
                 height++;
                 lines.add(scanner.nextLine());
@@ -115,51 +125,42 @@ public class Map {
     }
 
     public void drawMap() {
-//        int w, h, ws, hs;
-//        w = width;
-//        ws = 0;
-//        h = height;
-//        hs = 0;
-//        if (isDrawing) {
-//            if(height-tmp.y>height-7){
-//                hs =height-15;
-//                h = height;
-//            } else {
-//                hs = (int)(height-tmp.y-7);
-//                h = (int)(height-tmp.y+8);
-//            }
-//            if (height-tmp.y<=7){
-//                hs = 0;
-//                h = 15;
-//            }
-//            if (tmp.x <= 10) {
-//                w = 21;
-//                ws = 0;
-//            } else {
-//                ws = (int) tmp.x - 10;
-//                w = (int) tmp.x + 11;
-//            }
-//            if (tmp.x >= width - 10) {
-//                ws = width - 21;
-//                w = width;
-//            }
-//        }
         getViewSize();
+        batchMap.begin();
+        backSprite.draw(batchMap);
+        batchMap.end();
         for (int i = hs; i < h; i++)
             for (int j = ws; j < w; j++) {
                 switch (charMapArray[i][j]) {
                     case 'B':
                         setSprite(wallSprite, j, i);
+//                        new WallClass(wallSprite,j,i);
+                        break;
+                    case 'S':
+//                        new WallClass(brickSprite,j,i);
+                        setSprite(brickSprite,j,i);
+                        break;
+                    case 'G':
+                        setSprite(groundSprite,j,i);
+                        break;
+                    case 'T':
+                        setSprite(tubeSprite,j,i);
+                        break;
+                    case 'I':
                         break;
                     case 'V':
                         if (!isDrawing)
-                            enemies.add(new EnemyWalker(this, j * 30, (height - i - 1) * 30));
+                            enemies.add(new EnemyWalker(this, j * cellSize, (height - i - 1) * cellSize));
                         break;
                     case 'D':
                         setSprite(dolSprite, j, i);
                         break;
                     case 'P':
                         setSprite(rubSprite, j, i);
+                        break;
+                    case 'W':
+                        if (!isDrawing)
+                            enemies.add(new EnemyFiring(this, j * cellSize, (height - i - 1) * cellSize));
                         break;
                     default:
                         break;
@@ -180,8 +181,9 @@ public class Map {
         wallSprite.getTexture().dispose();
         dolSprite.getTexture().dispose();
         rubSprite.getTexture().dispose();
+        brickSprite.getTexture().dispose();
         player.dispose();
-        for (EnemyWalker e : enemies) {
+        for (IEnemy e : enemies) {
             e.sprite.getTexture().dispose();
         }
     }
