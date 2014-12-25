@@ -47,14 +47,14 @@ public class GameScreen extends SuperMarioScreen {
         if (!map.player.stunned) {
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 map.player.dx = map.player.SpeedX;
-                if(map.player.grounded){
-                map.player.playerAnimation(-1);}
+//                if(map.player.grounded)
+                map.player.playerAnimation(-1);
                 map.player.isGameStart=true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 map.player.dx = -map.player.SpeedX;
-                if(map.player.grounded){
-                    map.player.playerAnimation(1);}
+//                if(map.player.grounded)
+                    map.player.playerAnimation(1);
                 map.player.isGameStart=true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -92,7 +92,7 @@ public class GameScreen extends SuperMarioScreen {
             camera.position.x = map.player.point.x;
             map.backSprite.setX(map.player.point.x - SuperMario.WIDTH / 2);
             map.player.liveSprite.setX(map.player.point.x - SuperMario.WIDTH / 2 + 10);
-            map.player.labelPoints.setX(map.player.point.x + SuperMario.WIDTH / 2 - 70);
+            map.player.labelPoints.setX(map.player.point.x + SuperMario.WIDTH / 2 - 80);
         }
         if ((map.player.point.y > SuperMario.HEIGHT / 2) && (map.player.point.y < (map.getHeight()-1) * map.cellSize - SuperMario.HEIGHT / 2)) {
             camera.position.y = map.player.point.y;

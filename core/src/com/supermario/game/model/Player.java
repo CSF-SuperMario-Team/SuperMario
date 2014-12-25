@@ -47,7 +47,7 @@ public class Player {
         this.map = map;
         labelPoints = new Label("0", new Label.LabelStyle(font, Color.LIGHT_GRAY)) {
             {
-                setX(SuperMario.WIDTH - 70);
+                setX(SuperMario.WIDTH - 80);
                 setY(SuperMario.HEIGHT - map.cellSize);
             }
         };
@@ -135,9 +135,11 @@ public class Player {
     }
 
     public void playerAnimation(int dir){// Анимация игрока
-        stateTime+=Gdx.graphics.getDeltaTime();
-        currentFrame = walkAnimation.getKeyFrame(stateTime,true);
-        playerSprite.setRegion(currentFrame);
+        if(grounded) {
+            stateTime += Gdx.graphics.getDeltaTime();
+            currentFrame = walkAnimation.getKeyFrame(stateTime, true);
+            playerSprite.setRegion(currentFrame);
+        }
         if(playerSprite.getScaleX()*dir<0){
             playerSprite.setScale(playerSprite.getScaleX()*-1,playerSprite.getScaleY());
         }
