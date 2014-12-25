@@ -33,7 +33,7 @@ public class Player {
     public boolean isFinished = false;//достиг ли игрок конца уровня
     public boolean stunned = false;//Оглушен ли игрок врагом
     public final int Gravity = 20;//Влияние гравитации
-    public final int SpeedX = 500;//Скорость движения по оси Х
+    public final int SpeedX = 300;//Скорость движения по оси Х
     public final int SpeedY = 600;//Скорость движения по оси Y
     private Texture texture = new Texture(Gdx.files.internal("assets/put.png"));// анимационный лист
     private TextureRegion[] walkPutin = new TextureRegion[8];
@@ -55,7 +55,7 @@ public class Player {
         for (int i = 0; i < 8; i++) {
             walkPutin[i] = tmp[0][i];
         }
-        walkAnimation = new Animation(0.1f, walkPutin);
+        walkAnimation = new Animation(0.07f, walkPutin);
         point = new Vector2(x, y);
         liveSprite = new Sprite(new Texture(Gdx.files.internal("assets/live.png"))) {
             {
@@ -99,13 +99,18 @@ public class Player {
                         isFinished = true;
                     }
                 }
-                if (map.charMapArray[i][j] == 'D') { // Бонус доллар
-                    map.dollar.make(this);
-                    map.charMapArray[i][j] = ' ';
-                    Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x, point.y + playerSize.y);
-                }
-                if (map.charMapArray[i][j] == 'P') { // Бонус рубль
-                    map.ruble.make(this);
+//                if (map.charMapArray[i][j] == 'D') { // Бонус доллар
+//                    map.dollar.make(this);
+//                    map.charMapArray[i][j] = ' ';
+//                    Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x, point.y + playerSize.y);
+//                }
+                if (map.charMapArray[i][j] == 'P' || map.charMapArray[i][j] == 'D') { // Бонус
+                    //map.ruble.make(this);
+                    for (Bonus bonus: map.bonuses){
+                        if(bonus.point.x == j && bonus.point.y == i){
+                            bonus.make(this);
+                        }
+                    }
                     map.charMapArray[i][j] = ' ';
                     Bonus.labels.get(Bonus.labels.size() - 1).setPosition(point.x, point.y + playerSize.y);
                 }

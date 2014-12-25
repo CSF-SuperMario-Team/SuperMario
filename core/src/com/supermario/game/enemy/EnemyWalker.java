@@ -14,9 +14,9 @@ import com.supermario.game.model.Map;
 public class EnemyWalker extends IEnemy {
 
     public Vector2 point, size;
-    int dx = -100;
+    int dx = -170;
     Map map;
-    //    Texture texture = new Texture(Gdx.files.internal("assets/enemy.png"));
+    //    Texture textureup = new Texture(Gdx.files.internal("assets/enemy.png"));
     private Texture texture = new Texture(Gdx.files.internal("assets/Sprite2.png"));
     private TextureRegion[] walkObama = new TextureRegion[6];
     float stateTime = 0;
@@ -39,7 +39,7 @@ public class EnemyWalker extends IEnemy {
         };
 //        sprite.setX(x);
 //        sprite.setY(y + 1);
-        walkObamaAnimation = new Animation(0.1f, walkObama);
+        walkObamaAnimation = new Animation(0.08f, walkObama);
         size = new Vector2(50, 68);
         live = true;
     }

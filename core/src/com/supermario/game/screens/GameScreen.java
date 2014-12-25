@@ -47,12 +47,14 @@ public class GameScreen extends SuperMarioScreen {
         if (!map.player.stunned) {
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 map.player.dx = map.player.SpeedX;
-                map.player.playerAnimation(-1);
+                if(map.player.grounded){
+                map.player.playerAnimation(-1);}
                 map.player.isGameStart=true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 map.player.dx = -map.player.SpeedX;
-                map.player.playerAnimation(1);
+                if(map.player.grounded){
+                    map.player.playerAnimation(1);}
                 map.player.isGameStart=true;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
