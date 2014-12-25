@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.supermario.game.SuperMario;
+import com.supermario.game.bonus.Bonus;
 import com.supermario.game.bonus.DolBonus;
 import com.supermario.game.bonus.RubBonus;
 import com.supermario.game.enemy.EnemyFiring;
@@ -36,6 +37,7 @@ public class Map {
     public Sprite backSprite;
     public Player player; //ссылка на персонажа
     public ArrayList<IEnemy> enemies = new ArrayList<IEnemy>();
+    public ArrayList<Bonus> bonuses = new ArrayList<Bonus>();
     public DolBonus dollar;
     public RubBonus ruble;
     private int w, h, ws, hs;
@@ -49,8 +51,8 @@ public class Map {
     }
 
     public Map(SpriteBatch batch) {
-        dollar = new DolBonus();
-        ruble = new RubBonus();
+//        dollar = new DolBonus();
+//        ruble = new RubBonus();
         height = 0;
         width = 0;
         batchMap = batch;
@@ -153,10 +155,15 @@ public class Map {
                             enemies.add(new EnemyWalker(this, j * cellSize, (height - i - 1) * cellSize));
                         break;
                     case 'D':
-                        setSprite(dolSprite, j, i);
+//                        setSprite(dolSprite, j, i);
+                        if(!isDrawing){
+                            bonuses.add(new DolBonus(j,i));
+                        }
                         break;
                     case 'P':
-                        setSprite(rubSprite, j, i);
+//                        setSprite(rubSprite, j, i);
+                        if(!isDrawing)
+                        bonuses.add(new RubBonus(j,i));
                         break;
                     case 'W':
                         if (!isDrawing)

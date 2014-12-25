@@ -24,7 +24,12 @@ public class MapRenderer {
         map.drawMap();
         batch.begin();
         map.player.playerSprite.draw(batch);
-
+        for (Bonus bonus : map.bonuses){
+            if(bonus.visible) {
+                bonus.playAnimation();
+                bonus.sprite.draw(batch);
+            }
+        }
         for (IEnemy enemy : map.enemies) {
             enemy.sprite.draw(batch);
             if (enemy instanceof EnemyFiring) {
