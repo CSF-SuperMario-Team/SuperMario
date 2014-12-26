@@ -82,9 +82,14 @@ public class GameScreen extends SuperMarioScreen {
                 }
             }
         }
-        if (map.player.countLife == 0 || map.player.isFinished) {
+        if ( map.player.isFinished) {
             SuperMario.currentLevel++;
             SuperMario.playerPoint+=map.player.count;
+            SuperMario.AllPlayerPoints+=SuperMario.playerPoint;
+            dispose();
+            game.setScreen(new NextLevelScreen(game));
+        }
+        if (map.player.countLife == 0){
             dispose();
             game.setScreen(new EndGameScreen(game));
         }

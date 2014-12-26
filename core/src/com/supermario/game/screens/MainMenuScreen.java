@@ -20,7 +20,7 @@ public class MainMenuScreen extends SuperMarioScreen {
 
     private Sprite hello;
 
-    public  MainMenuScreen (Game game) {
+    public MainMenuScreen(Game game) {
         this.game = game;
     }
 
@@ -45,11 +45,16 @@ public class MainMenuScreen extends SuperMarioScreen {
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 screenY = SuperMario.HEIGHT - screenY; //инверсия координаты у
 
-                if (new Rectangle(20, 340, 210, 80).contains(screenX,screenY)) //нажали на начало игры
-                    game.setScreen(new GameScreen(game));
+                if (new Rectangle(20, 340, 210, 80).contains(screenX, screenY)) { //нажали на начало игры
 
-                if (new Rectangle(245, 0, 355, 120).contains(screenX,screenY))  //нажали на таблицу лучших результатов
-                    game.setScreen(new StoreScreen());
+                    game.setScreen(new GameScreen(game));
+                    Gdx.input.setInputProcessor(null);
+
+                }
+                if (new Rectangle(245, 0, 355, 120).contains(screenX, screenY)) {  //нажали на таблицу лучших результатов
+                    game.setScreen(new StoreScreen(game));
+//                    Gdx.input.setInputProcessor(null);
+                }
 
                 return true;
             }

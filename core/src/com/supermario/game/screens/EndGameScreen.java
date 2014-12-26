@@ -35,7 +35,7 @@ public class EndGameScreen extends SuperMarioScreen {
     @Override
     public void show() {
         super.show();
-        sprite = new Sprite(new Texture(Gdx.files.internal("assets/end.png"))) {
+        sprite = new Sprite(new Texture(Gdx.files.internal("assets/loose.png"))) {
             {
                 setX(0);
                 setY(0);
