@@ -90,6 +90,7 @@ public class GameScreen extends SuperMarioScreen {
             game.setScreen(new NextLevelScreen(game));
         }
         if (map.player.countLife == 0){
+            SuperMario.AllPlayerPoints+=map.player.count;
             dispose();
             game.setScreen(new EndGameScreen(game));
         }

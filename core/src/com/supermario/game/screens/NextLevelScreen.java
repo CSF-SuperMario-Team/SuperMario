@@ -20,7 +20,7 @@ import java.io.*;
  */
 public class NextLevelScreen extends SuperMarioScreen {
     Sprite sprite;
-    private BitmapFont font = new BitmapFont(Gdx.files.internal("font/1.fnt"), new Sprite(new Texture("font/1.png")), false);
+    private BitmapFont font = new BitmapFont(Gdx.files.internal("font/3.fnt"), new Sprite(new Texture("font/3.png")), false);
     private com.badlogic.gdx.scenes.scene2d.ui.Label label;
 
     public NextLevelScreen(Game g) {
@@ -51,8 +51,8 @@ public class NextLevelScreen extends SuperMarioScreen {
 
         label = new Label(Integer.toString(SuperMario.AllPlayerPoints), new Label.LabelStyle(font, Color.LIGHT_GRAY)) {
             {
-                setX(100);
-                setY(100);
+                setX(470);
+                setY(320);
             }
         };
 
@@ -84,6 +84,14 @@ public class NextLevelScreen extends SuperMarioScreen {
                         Gdx.input.setInputProcessor(null);
                     }
 
+                }
+                if(SuperMario.currentLevel == 4){
+                    if (new Rectangle(156, 420 - 376, 324, 58).contains(screenX, screenY)) { //нажали на начало игры
+
+                        game.setScreen(new MainMenuScreen(game));
+//                        Gdx.input.setInputProcessor(null);
+
+                    }
                 }
                 return true;
             }
@@ -119,6 +127,8 @@ public class NextLevelScreen extends SuperMarioScreen {
             catch (IOException e){
                 e.printStackTrace();
             }
+
+
         }
     }
 }

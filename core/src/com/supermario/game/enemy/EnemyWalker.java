@@ -68,7 +68,7 @@ public class EnemyWalker extends IEnemy {
                     dx *= -1;
                 }
             }
-        if (live && (x >= (map.player.point.x - size.x)) && (x <= (map.player.point.x + map.player.playerSize.x)) && (Math.abs(y - map.player.point.y) <= size.y)) {//somnitelno blya
+        if (live && (x >= (map.player.point.x - size.x)) && (x <= (map.player.point.x + map.player.playerSize.x)) && (Math.abs(y - map.player.point.y) <= size.y) && !map.player.stunned) {//somnitelno blya
             if (!map.player.grounded && map.player.dy < 0) {
                 map.player.dy = 200;
                 map.player.grounded = false;

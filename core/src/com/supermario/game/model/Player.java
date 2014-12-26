@@ -131,7 +131,7 @@ public class Player {
         }else {
             dx = 300;
         }
-//        countLife--;
+        countLife--;
     }
 
     public void playerAnimation(int dir){// Анимация игрока

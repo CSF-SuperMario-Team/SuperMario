@@ -15,7 +15,7 @@ public class SuperMario extends Game {
 
     public static final int WIDTH = 600; //размеры окна - ширина
     public static final int HEIGHT = 420; //размеры окна - высота
-    public static int currentLevel = 3;
+    public static int currentLevel = 1;
     public static int playerPoint = 0;
     public static int AllPlayerPoints = 0;
 

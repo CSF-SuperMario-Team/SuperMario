@@ -40,7 +40,7 @@ public class EnemyBullet extends IEnemy {
                     live = false;
                 }
             }
-        if (live && (x >= (map.player.point.x - size.x)) && (x <= (map.player.point.x + map.player.playerSize.x)) && (map.player.point.y<y && map.player.point.y + map.player.playerSize.y>y)) {//somnitelno blya
+        if (live && (x >= (map.player.point.x - size.x)) && (x <= (map.player.point.x + map.player.playerSize.x)) && (map.player.point.y<y && map.player.point.y + map.player.playerSize.y>y)&& !map.player.stunned) {//somnitelno blya
             dx *= -1;
             map.player.getDamage(dx);
             dx = 0;
