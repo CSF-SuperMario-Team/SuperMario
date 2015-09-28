@@ -14,8 +14,11 @@ public class SuperMario extends Game {
 
 
     public static final int WIDTH = 600; //размеры окна - ширина
-    public static final int HEIGHT = 418; //размеры окна - высота
-	
+    public static final int HEIGHT = 420; //размеры окна - высота
+    public static int currentLevel = 1;
+    public static int playerPoint = 0;
+    public static int AllPlayerPoints = 0;
+
 	@Override
 	public void create () {
         this.setScreen(new MainMenuScreen(this)); // создание начального экрана
